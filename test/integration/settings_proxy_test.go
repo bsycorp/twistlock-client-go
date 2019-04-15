@@ -28,7 +28,7 @@ dDUpO0l6ViX9RzT1zPC610aKFLlVDe7smVGqvq0usfC2FUoex/eqdkwgclBZdW0=
 -----END CERTIFICATE-----`
 
 func TestSettingsSetAndGetProxy(t *testing.T) {
-	settings := &tw.ProxyDetails{
+	settings := &tw.ProxySettings{
 		Ca: bogusCert,
 		HttpProxy: "http://proxies.int.v2.brkn.place:3128",
 		NoProxy: "127.0.0.1",
@@ -62,13 +62,13 @@ func TestSettingsSetAndGetProxy(t *testing.T) {
 		t.Fatal("unexpected proxy password value")
 	}
 	// Clear the proxy again
-	err = client.SetProxy(&tw.ProxyDetails{})
+	err = client.SetProxy(&tw.ProxySettings{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	// Check that it was cleared
 	clearSettings, err := client.GetProxy()
-	if !reflect.DeepEqual(clearSettings, &tw.ProxyDetails{}) {
+	if !reflect.DeepEqual(clearSettings, &tw.ProxySettings{}) {
 		t.Fatal("proxy settings not empty after clear")
 	}
 }

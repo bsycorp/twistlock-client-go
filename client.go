@@ -3,6 +3,7 @@ package tw
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -117,12 +118,27 @@ type TokenResponse struct {
 	Token string `json:"token"`
 }
 
-func (c *Client) Login(username, password string) error {
-	body := map[string]string{
-		"username": username,
-		"password": password,
+type Credentials struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+// If not initialized, must create an initial admin account
+func (c *Client) Signup(creds *Credentials) error {
+	req, err := c.newRequest("POST", "signup", creds)
+	if err != nil {
+		return err
 	}
-	req, err := c.newRequest("POST", "authenticate", body)
+	_, err = c.do(req, nil)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Exchange credentials for JWT
+func (c *Client) Login(creds *Credentials) error {
+	req, err := c.newRequest("POST", "authenticate", creds)
 	if err != nil {
 		return err
 	}
@@ -135,6 +151,7 @@ func (c *Client) Login(username, password string) error {
 	return nil
 }
 
+// Invalidate JWT
 func (c *Client) Logout() error {
 	req, err := c.newRequest("POST", "logout", nil)
 	if err != nil {
@@ -144,3 +161,26 @@ func (c *Client) Logout() error {
 	return err
 }
 
+// Health check the API
+func (c *Client) Ping() error {
+	req, err := c.newRequest("GET", "_ping", nil)
+	if err != nil {
+		return err
+	}
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != 200 {
+		return NewApiErrorFromResponse(resp.StatusCode, body)
+	}
+	if string(body) != "OK" {
+		return errors.New("health check did not return OK")
+	}
+	return nil
+}

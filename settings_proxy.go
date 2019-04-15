@@ -5,7 +5,7 @@ type ProxyPassword struct {
 	Plain     string `json:"plain"`
 }
 
-type ProxyDetails struct {
+type ProxySettings struct {
 	Ca        string        `json:"ca"`
 	HttpProxy string        `json:"httpProxy"`
 	NoProxy   string        `json:"noProxy"`
@@ -13,12 +13,12 @@ type ProxyDetails struct {
 	User      string        `json:"user"`
 }
 
-func (c *Client) GetProxy() (*ProxyDetails, error) {
+func (c *Client) GetProxy() (*ProxySettings, error) {
 	req, err := c.newRequest("GET", "settings/proxy", nil)
 	if err != nil {
 		return nil, err
 	}
-	var resp ProxyDetails
+	var resp ProxySettings
 	_, err = c.do(req, &resp)
 	if err != nil {
 		return nil, err
@@ -26,7 +26,7 @@ func (c *Client) GetProxy() (*ProxyDetails, error) {
 	return &resp, nil
 }
 
-func (c *Client) SetProxy(r *ProxyDetails) error {
+func (c *Client) SetProxy(r *ProxySettings) error {
 	req, err := c.newRequest("POST", "settings/proxy", r)
 	if err != nil {
 		return err

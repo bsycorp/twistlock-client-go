@@ -7,6 +7,7 @@ import (
 	"testing"
 )
 
+// Precondition: server has been configured with a valid license
 func TestSettingsGetLicense(t *testing.T) {
 	resp, err := client.GetLicense()
 	if err != nil {

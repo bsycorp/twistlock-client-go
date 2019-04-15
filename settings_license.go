@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type GetLicenseResponse struct {
+type LicenseSettings struct {
 	CustomerID      string `json:"customer_id"`
 	CustomerEmail   string `json:"customer_email"`
 	ContractID      string `json:"contract_id"`
@@ -19,12 +19,12 @@ type GetLicenseResponse struct {
 	ExpirationDate time.Time `json:"expiration_date"`
 }
 
-func (c *Client) GetLicense() (*GetLicenseResponse, error) {
+func (c *Client) GetLicense() (*LicenseSettings, error) {
 	req, err := c.newRequest("GET", "settings/license", nil)
 	if err != nil {
 		return nil, err
 	}
-	var resp GetLicenseResponse
+	var resp LicenseSettings
 	_, err = c.do(req, &resp)
 	if err != nil {
 		return nil, err
