@@ -1,6 +1,10 @@
 init:
-  adminUsername: "admin"
+  # Enable automatic initialization of the twistlock console
+  # If the controller detects that the console has not been initialized,
+  # an admin user will be created and a license will be installed.
+  enabled: true
 saml:
+  # This block is used to enable SAML federation.
   enabled: true
   type: adfs
   url: https://my-adfs-server.twistlock.com/adfs/SSO
