@@ -37,13 +37,15 @@ go test -v -tags integration ./test/integration/
 
 # twistlock-controller
 
-The twistlock-controller can be used during the twistlock provisioning process,
-or as a separate controller to manage the twistlock console configuration.
+The twistlock-controller is a helper for automated twistlock provisioning and
+configuration management.
 
-This allowed automated twistlock provisioning.
+It can be used as a "one shot" configurator during the twistlock provisioning 
+process, or as a running controller to continuously manage twistlock console 
+configuration.
 
 An example configuration file can be found at: 
-[cmd/twistlock-controller/sample.yaml](cmd/twistlock-controller/sample.yaml)
+[cmd/twistlock-controller/sample.yml](cmd/twistlock-controller/sample.yml)
 
 ## Command-line and environment variables
 
