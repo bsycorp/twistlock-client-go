@@ -4,7 +4,7 @@ Twistlock API Client for golang
 ## Summary
 
 ```go
-import tw "github.com/zxcmx/twistlock-client-go"
+import tw "github.com/bsycorp/twistlock-client-go"
 
 ...
 

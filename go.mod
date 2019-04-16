@@ -1,4 +1,4 @@
-module github.com/zxcmx/twistlock-client-go
+module github.com/bsycorp/twistlock-client-go
 
 go 1.12
 

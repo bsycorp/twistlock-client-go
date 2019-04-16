@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	tw "github.com/zxcmx/twistlock-client-go"
+	tw "github.com/bsycorp/twistlock-client-go"
 	"log"
 	"os"
 )

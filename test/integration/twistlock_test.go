@@ -5,7 +5,7 @@ package integration
 import (
 	"fmt"
 	"github.com/ory/dockertest"
-	twistlock "github.com/zxcmx/twistlock-client-go"
+	twistlock "github.com/bsycorp/twistlock-client-go"
 	"log"
 	"os"
 	"testing"

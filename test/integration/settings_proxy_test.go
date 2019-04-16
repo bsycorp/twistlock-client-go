@@ -3,7 +3,7 @@
 package integration
 
 import (
-	"github.com/zxcmx/twistlock-client-go"
+	"github.com/bsycorp/twistlock-client-go"
 	"reflect"
 	"testing"
 )
