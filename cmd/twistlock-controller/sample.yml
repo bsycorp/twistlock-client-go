@@ -1,5 +1,5 @@
 init:
-  # Enable automatic initialization of the twistlock console
+  # Enables automatic initialization of the twistlock console.
   # If the controller detects that the console has not been initialized,
   # an admin user will be created and a license will be installed.
   enabled: true
