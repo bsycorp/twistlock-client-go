@@ -48,10 +48,6 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Could not connect to docker: %s", err)
 	}
 	log.Println("twistlock console is ready")
-	creds := twistlock.Credentials{
-		Username: twUsername,
-		Password: twPassword,
-	}
 	isInitialized, err := client.IsInitialized()
 	if err != nil {
 		log.Fatalf("failed to check initialization state of server: %s", err)
@@ -59,11 +55,11 @@ func TestMain(m *testing.M) {
 	if isInitialized == true {
 		log.Fatalln("expected server to be initialized, but it was not")
 	}
-	err = client.Signup(&creds)
+	err = client.Signup(twUsername, twPassword)
 	if err != nil {
 		log.Fatalf("failed to initialize admin account: %s", err)
 	}
-	err = client.Login(&creds)
+	err = client.Login(twUsername, twPassword)
 	if err != nil {
 		log.Fatalf("failed to log in to twistlock console: %s", err)
 	}

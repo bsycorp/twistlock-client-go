@@ -13,3 +13,6 @@
 
 # IntelliJ
 .idea/
+
+# builds
+build/

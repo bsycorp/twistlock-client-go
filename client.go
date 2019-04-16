@@ -124,8 +124,11 @@ type Credentials struct {
 }
 
 // If not initialized, must create an initial admin account
-func (c *Client) Signup(creds *Credentials) error {
-	req, err := c.newRequest("POST", "signup", creds)
+func (c *Client) Signup(username, password string) error {
+	req, err := c.newRequest("POST", "signup", &Credentials{
+		Username: username,
+		Password: password,
+	})
 	if err != nil {
 		return err
 	}
@@ -137,8 +140,11 @@ func (c *Client) Signup(creds *Credentials) error {
 }
 
 // Exchange credentials for JWT
-func (c *Client) Login(creds *Credentials) error {
-	req, err := c.newRequest("POST", "authenticate", creds)
+func (c *Client) Login(username, password string) error {
+	req, err := c.newRequest("POST", "authenticate", &Credentials{
+		Username: username,
+		Password: password,
+	})
 	if err != nil {
 		return err
 	}
