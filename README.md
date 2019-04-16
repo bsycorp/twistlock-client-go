@@ -4,16 +4,22 @@ Twistlock API Client for golang
 ## Summary
 
 ```go
+import tw "github.com/zxcmx/twistlock-client-go"
 
+...
 
+client, err = tw.NewClient("http://localhost:8081/api/v1/")
+if err != nil {
+	log.Fatalln("error creating twistlock client: ", err)
+}
+err = client.Login("twadmin", "great_password")
+if err != nil {
+	log.Fatalln("failed to log into twistlock console: ", err)
+}
+
+...
 
 ```
-
-
-
-## Login and authentication
-
-TBD
 
 ## Testing
 
