@@ -35,14 +35,14 @@ type ServerError struct {
 	Err string `json:"err"`
 }
 
-func NewApiError(statusCode int, err string) error {
+func NewServerError(statusCode int, err string) error {
 	return &ServerError{
 		StatusCode: statusCode,
 		Err: err,
 	}
 }
 
-func NewApiErrorFromResponse(statusCode int, body []byte) error {
+func NewServerErrorFromResponse(statusCode int, body []byte) error {
 	apiErr := ServerError{StatusCode: statusCode}
 	decodeErr := json.Unmarshal(body, &apiErr)
 	if decodeErr != nil {
@@ -93,7 +93,7 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 		return nil, err
 	}
 	if resp.StatusCode != 200 {
-		return nil, NewApiErrorFromResponse(resp.StatusCode, body)
+		return nil, NewServerErrorFromResponse(resp.StatusCode, body)
 	}
 	if v == nil {
 		// Don't bother unmarshalling response if none is expected
@@ -183,7 +183,7 @@ func (c *Client) Ping() error {
 		return err
 	}
 	if resp.StatusCode != 200 {
-		return NewApiErrorFromResponse(resp.StatusCode, body)
+		return NewServerErrorFromResponse(resp.StatusCode, body)
 	}
 	if string(body) != "OK" {
 		return errors.New("health check did not return OK")
