@@ -30,6 +30,10 @@ func main() {
 	if envLicense, ok := os.LookupEnv("TWISTLOCK_LICENSE"); ok {
 		*license = envLicense
 	}
+	err := ApplyConfig()
+	if err != nil {
+		log.Println("error applying config: ", err)
+	}
 	ticker := time.NewTicker(15 * time.Minute)
 	quit := make(chan struct{})
 	for {
@@ -47,6 +51,8 @@ func main() {
 }
 
 func ApplyConfig() error {
+	log.Println("applying config")
+
 	// Load config file
 	config, err := LoadConfig(*configFile)
 	if err != nil {
@@ -77,6 +83,11 @@ func ApplyConfig() error {
 		}
 		log.Println("created admin user: ", *username)
 	}
+	// OK, we have an admin user, so we need to log in
+	err = c.Login(*username, *password)
+	if err != nil {
+		return errors.Wrap(err, "login failed")
+	}
 	// Check the license
 	twLicense, err := c.GetLicense()
 	if err != nil {
@@ -91,7 +102,10 @@ func ApplyConfig() error {
 		if err != nil {
 			return errors.Wrap(err, "failed to install license")
 		}
+		log.Println("installed license")
+
 	}
 	// OK, we have an admin user and a valid license!
+	log.Println("configuration applied")
 	return nil
 }

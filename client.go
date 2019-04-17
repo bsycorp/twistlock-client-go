@@ -77,7 +77,7 @@ func (c *Client) newRequest(method, path string, body interface{}) (*http.Reques
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", c.UserAgent)
 	if c.Token != "" {
-		req.Header.Set("Authorization", "Bearer "+c.Token)
+		req.Header.Set("Authorization", "Bearer " + c.Token)
 	}
 	return req, nil
 }
@@ -98,9 +98,10 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 	if v == nil {
 		// Don't bother unmarshalling response if none is expected
 		return resp, nil
+	} else {
+		err = json.Unmarshal(body, v)
+		return resp, err
 	}
-	err = json.Unmarshal(body, v)
-	return resp, err
 }
 
 func NewClient(apiUrl string) (*Client, error) {
@@ -110,7 +111,7 @@ func NewClient(apiUrl string) (*Client, error) {
 		return nil, err
 	}
 	c.BaseURL = u
-	c.httpClient = &http.Client{}
+	c.httpClient = http.DefaultClient
 	return c, nil
 }
 
