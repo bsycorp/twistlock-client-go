@@ -32,20 +32,18 @@ func main() {
 	}
 	ticker := time.NewTicker(15 * time.Minute)
 	quit := make(chan struct{})
-	go func() {
-		for {
-			select {
-			case <- ticker.C:
-				err := ApplyConfig()
-				if err != nil {
-					log.Println("error applying config: ", err)
-				}
-			case <- quit:
-				ticker.Stop()
-				return
+	for {
+		select {
+		case <- ticker.C:
+			err := ApplyConfig()
+			if err != nil {
+				log.Println("error applying config: ", err)
 			}
+		case <- quit:
+			ticker.Stop()
+			return
 		}
-	}()
+	}
 }
 
 func ApplyConfig() error {
