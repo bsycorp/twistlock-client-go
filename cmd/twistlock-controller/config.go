@@ -1,9 +1,9 @@
 package main
 
 import (
-	"log"
-	"net/url"
-	"strings"
+	"github.com/pkg/errors"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 )
 
 type Config struct {
@@ -27,58 +27,17 @@ type SamlConfig struct {
 	AppID      string `yaml:"appId"`
 	AppSecret  string `yaml:"appSecret"`
 }
+//var ValidSamlTypes = []string{"adfs", "azure", "gsuite", "okta", "ping", "shibboleth"}
 
-var ValidSamlTypes = []string{"adfs", "azure", "gsuite", "okta", "ping", "shibboleth"}
-
-func IsUrl(str string) bool {
-	u, err := url.Parse(str)
+func LoadConfig(path string) (*Config, error) {
+	var c Config
+	data, err := ioutil.ReadFile(path)
 	if err != nil {
-		return false
+		return nil, errors.Wrap(err, "read error: ")
 	}
-	if u.Scheme == "" || u.Host == "" {
-		return false
+	err = yaml.Unmarshal(data, &c)
+	if err != nil {
+		return nil, errors.Wrap(err, "parse error: ")
 	}
-	return true
+	return &c, nil
 }
-
-func MustBeOneOf(s string, values []string, msg string) {
-	for _, v := range values {
-		if v == s {
-			return
-		}
-	}
-	log.Fatalf("%s: value should be one of: %v", msg, values)
-}
-
-func MustNotBeMissing(s, msg string) {
-	if s == "" {
-		log.Fatalln(msg)
-	}
-}
-
-func MustBeUrl(u, msg string) {
-	if u == "" {
-		return
-	}
-	if !IsUrl(u) {
-		log.Fatalln(msg)
-	}
-}
-
-func MustBeValidSamlConfig(config *SamlConfig) {
-	if config.Enabled != true {
-		return
-	}
-	samlType := strings.ToLower(config.Type)
-	MustNotBeMissing(samlType, "saml 'type' is required")
-	MustBeOneOf(samlType, ValidSamlTypes, "invalid saml 'type'")
-	MustNotBeMissing(config.URL, "saml 'url' is required")
-	MustNotBeMissing(config.Cert, "saml 'cert' is required")
-	MustNotBeMissing(config.Issuer, "saml 'issuer' is required")
-	MustNotBeMissing(config.Audience, "saml 'audience' is required")
-	MustBeUrl(config.URL, "saml 'url' is invalid")
-	if config.ConsoleURL != "" {
-		MustBeUrl(config.ConsoleURL, "saml 'consoleURL' is invalid")
-	}
-}
-

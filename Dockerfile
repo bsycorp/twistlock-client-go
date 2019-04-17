@@ -13,8 +13,8 @@ RUN make
 # run
 FROM scratch
 WORKDIR /
-COPY --from=build-env /src/build/twistlock-controller-linux-x64 /twistlock-controller
 COPY --from=build-env /etc/passwd /etc/passwd
+COPY --from=build-env /src/build/twistlock-controller-linux-x64 /twistlock-controller
 USER controller
 
 ENTRYPOINT ["/twistlock-controller"]
