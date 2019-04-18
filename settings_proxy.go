@@ -1,16 +1,16 @@
 package tw
 
-type ProxyPassword struct {
+type SecretValue struct {
 	Encrypted string `json:"encrypted"`
 	Plain     string `json:"plain"`
 }
 
 type ProxySettings struct {
-	Ca        string        `json:"ca"`
-	HttpProxy string        `json:"httpProxy"`
-	NoProxy   string        `json:"noProxy"`
-	Password  ProxyPassword `json:"password"`
-	User      string        `json:"user"`
+	Ca        string      `json:"ca"`
+	HttpProxy string      `json:"httpProxy"`
+	NoProxy   string      `json:"noProxy"`
+	Password  SecretValue `json:"password"`
+	User      string      `json:"user"`
 }
 
 func (c *Client) GetProxy() (*ProxySettings, error) {

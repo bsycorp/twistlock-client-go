@@ -30,29 +30,23 @@ func main() {
 	if envLicense, ok := os.LookupEnv("TWISTLOCK_LICENSE"); ok {
 		*license = envLicense
 	}
-	err := ApplyConfig()
-	if err != nil {
-		log.Println("error applying config: ", err)
-	}
-	ticker := time.NewTicker(15 * time.Minute)
-	quit := make(chan struct{})
 	for {
-		select {
-		case <- ticker.C:
-			err := ApplyConfig()
-			if err != nil {
-				log.Println("error applying config: ", err)
-			}
-		case <- quit:
-			ticker.Stop()
-			return
-		}
+		ApplyConfig()
+		time.Sleep(15 * time.Minute)
 	}
 }
 
-func ApplyConfig() error {
+func ApplyConfig() {
 	log.Println("applying config")
+	err := Configure()
+	if err != nil {
+		log.Println("error applying config: ", err)
+	} else {
+		log.Println("configuration applied")
+	}
+}
 
+func Configure() error {
 	// Load config file
 	config, err := LoadConfig(*configFile)
 	if err != nil {
@@ -105,7 +99,62 @@ func ApplyConfig() error {
 		log.Println("installed license")
 
 	}
-	// OK, we have an admin user and a valid license!
-	log.Println("configuration applied")
+	// At this point, we have an admin user, we're logging in and the license
+	// is valid. Everything else is best-effort.
+	if err = ConfigureSaml(c, &config.Saml); err != nil {
+		log.Println("error configuring saml: ", err)
+	}
+
 	return nil
+}
+
+func ConfigureSaml(client *tw.Client, saml *SamlConfig) error {
+	if !saml.Enabled {
+		log.Println("not configuring saml")
+		return nil
+	}
+	samlTypes := []string{"adfs", "azure", "gsuite", "okta", "ping", "shibboleth"}
+	if !ListContains(samlTypes, saml.Type) {
+		return errors.Errorf("invalid saml.type: %s", saml.Type)
+	}
+	if saml.URL == "" {
+		return errors.Errorf("saml.url required but not specified")
+	}
+	if saml.Cert == "" {
+		return errors.New("saml.cert required but not specified")
+	}
+	if saml.Issuer == "" {
+		return errors.New("saml.issuer required but not specified")
+	}
+	err := client.SetSAMLSettings(&tw.SAMLSettings{
+		Enabled: true,
+		Type: saml.Type,
+		URL: saml.URL,
+		Audience: saml.Audience,
+		Cert: saml.Cert,
+		ConsoleURL: saml.ConsoleURL,
+		Issuer: saml.Issuer,
+		TenantID: saml.TenantID,
+		AppID: saml.AppID,
+		AppSecret: tw.SecretValue{
+			Plain: saml.AppSecret,
+		},
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func ListContains(haystack []string, needle string) (bool) {
+	if haystack == nil {
+		return false
+	}
+	for _, straw := range haystack {
+		if straw == needle {
+			return true
+		}
+	}
+	return false
 }

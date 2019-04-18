@@ -32,7 +32,7 @@ func TestSettingsSetAndGetProxy(t *testing.T) {
 		Ca: bogusCert,
 		HttpProxy: "http://proxies.int.v2.brkn.place:3128",
 		NoProxy: "127.0.0.1",
-		Password: tw.ProxyPassword{
+		Password: tw.SecretValue{
 			Plain: "swizzle",
 		},
 		User: "wibble",

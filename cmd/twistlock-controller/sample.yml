@@ -5,6 +5,7 @@ init:
   enabled: true
 saml:
   # This block is used to enable SAML federation.
+  # Type may be: adfs, azure, gsuite, okta, ping, shibboleth
   enabled: true
   type: adfs
   url: https://my-adfs-server.twistlock.com/adfs/SSO
@@ -29,7 +30,7 @@ saml:
     -----END CERTIFICATE-----
   issuer: https://my-adfs-server.twistlock.com/adfs/services/trust
   audience: twistlock
-  # These are only required for
+  # These are only required for Azure
   appId:
   tenantId:
   appSecret:

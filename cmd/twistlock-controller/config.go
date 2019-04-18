@@ -22,7 +22,7 @@ type SamlConfig struct {
 	Cert       string `yaml:"cert"`
 	Issuer     string `yaml:"issuer"`
 	Audience   string `yaml:"audience"`
-	ConsoleURL string `yaml:"consoleURL"`
+	ConsoleURL string `yaml:"consoleUrl"`
 	TenantID   string `yaml:"tenantId"`
 	AppID      string `yaml:"appId"`
 	AppSecret  string `yaml:"appSecret"`
