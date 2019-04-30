@@ -9,8 +9,8 @@ type ProxySettings struct {
 	Ca        string      `json:"ca"`
 	HttpProxy string      `json:"httpProxy"`
 	NoProxy   string      `json:"noProxy"`
-	Password  SecretValue `json:"password"`
 	User      string      `json:"user"`
+	Password  SecretValue `json:"password"`
 }
 
 func (c *Client) GetProxy() (*ProxySettings, error) {

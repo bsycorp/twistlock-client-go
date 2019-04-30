@@ -34,3 +34,29 @@ saml:
   appId:
   tenantId:
   appSecret:
+proxy:
+  # Configure the HTTP proxy used by the console
+  httpProxy: http://my-proxy.whatever.io:3128/
+  noProxy: 127.0.0.1,whatever.io,thing.whatever.com
+  caCert: |
+  -----BEGIN CERTIFICATE-----
+  MIIDBzCCAe+gAwIBAgIJAMW+ZiTaOV/wMA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNV
+  BAMMD3d3dy5leGFtcGxlLmNvbTAeFw0xOTA0MzAwNDE2NTlaFw0yOTA0MjcwNDE2
+  NTlaMBoxGDAWBgNVBAMMD3d3dy5leGFtcGxlLmNvbTCCASIwDQYJKoZIhvcNAQEB
+  BQADggEPADCCAQoCggEBAK1M5kuZJxfFcg0dJBxYdJJUBZoL5yq4pmhh6rZG+7Qm
+  ZuvUKgJB8BS41TziDmYG7HBBZ1cA9kGKXjHAiXfh/7TQCIzlU84wbuoVxSEzh8/U
+  sZl0WBMPPNp/fI8i39DDQKU8kRJ0qdlvn8X3K28mu73LkjHyIyUBQ/dks4/oBxu5
+  IqqhJQBQ97YdQWOsfDFSRormv7Yk/dyblKGShBc620np4bgp3hsDL7ULfNu4nJwZ
+  QYDDTflClEhoRvrbtv/g3QOCUVaDJ4mNT2lnIOSvzKkg4AQ7OI82bRf77uEaJcOs
+  7duUyDDMQkilQpAR6xVpuqP6XUFlZoUCvgX48cIj4KsCAwEAAaNQME4wHQYDVR0O
+  BBYEFOqOHvNB7M3DNiawJMHEf71eZAm2MB8GA1UdIwQYMBaAFOqOHvNB7M3DNiaw
+  JMHEf71eZAm2MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAGVqmMgV
+  RBBUEpZtr0URVzWHRC74QgHoCueVlshtCDg7lOmZ1KKgLqNk5b9bUX9rCMMKQtCD
+  Dj6FJZZ04SixoQv3oDdCbSa3jGx1UspGTtuZIw+LRaT2p8PmExBXeYTktEzjeY0A
+  QAqRlEaxFPnOoSjxUnCaLp91OpzGthbllnvKqeEeM+or+xl19IhEiTt+iw4CyIMW
+  t2Uqtnbzo2PSzDToB8L4nwxwTAVCtRxvJEEmFV1y65cKL70joHDQg196PF/BHAlT
+  yNLLyHHT/jcUQOg+Dq+HaHrh+dclzl6JJYrF4y8vzJRVLzqonAPssd1WGBqSm75s
+  MhoVOBCjCgAsJ90=
+  -----END CERTIFICATE-----
+  proxyUser: foo
+  proxyPassword: bar

@@ -104,6 +104,9 @@ func Configure() error {
 	if err = ConfigureSaml(c, &config.Saml); err != nil {
 		log.Println("error configuring saml: ", err)
 	}
+	if err = ConfigureProxy(c, &config.Proxy); err != nil {
+		log.Println("error configuring proxy: ", err)
+	}
 
 	return nil
 }
@@ -140,11 +143,24 @@ func ConfigureSaml(client *tw.Client, saml *SamlConfig) error {
 			Plain: saml.AppSecret,
 		},
 	})
-	if err != nil {
-		return err
-	}
+	return err
+}
 
-	return nil
+func ConfigureProxy(client *tw.Client, pc *ProxyConfig) error {
+	if pc.HttpProxy == "" {
+		return nil
+	}
+	err := client.SetProxy(&tw.ProxySettings{
+		Ca: pc.CaCert,
+		HttpProxy: pc.HttpProxy,
+		NoProxy: pc.NoProxy,
+		User: pc.ProxyUser,
+		Password: tw.SecretValue{
+			Plain: pc.ProxyPass,
+			Encrypted: "",
+		},
+	})
+	return err
 }
 
 func ListContains(haystack []string, needle string) (bool) {

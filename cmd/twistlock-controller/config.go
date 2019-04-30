@@ -7,8 +7,9 @@ import (
 )
 
 type Config struct {
-	Init InitConfig `yaml:"init"`
-	Saml SamlConfig `yaml:"saml"`
+	Init  InitConfig  `yaml:"init"`
+	Saml  SamlConfig  `yaml:"saml"`
+	Proxy ProxyConfig `yaml:"proxy"`
 }
 
 type InitConfig struct {
@@ -27,6 +28,15 @@ type SamlConfig struct {
 	AppID      string `yaml:"appId"`
 	AppSecret  string `yaml:"appSecret"`
 }
+
+type ProxyConfig struct {
+	HttpProxy string `yaml:"httpProxy"`
+	NoProxy   string `yaml:"noProxy"`
+	CaCert    string `yaml:"caCert"`
+	ProxyUser string `yaml:"proxyUser"`
+	ProxyPass string `yaml:"proxyPass"`
+}
+
 //var ValidSamlTypes = []string{"adfs", "azure", "gsuite", "okta", "ping", "shibboleth"}
 
 func LoadConfig(path string) (*Config, error) {
