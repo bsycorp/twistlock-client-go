@@ -74,28 +74,23 @@ type ContainerVulnerabilityResponse struct {
 
 /*
 GetContainerList will gather a list of containers, and their attached vulns
-*/
-func (c *Client) GetContainerList() ([]ContainerVulnerabilityResponse, error) {
-	req, err := c.newRequest("GET", "containers", nil)
-	if err != nil {
-		return nil, err
-	}
-	var ContainerVulnerabilities []ContainerVulnerabilityResponse
-	_, err = c.do(req, &ContainerVulnerabilities)
-	return ContainerVulnerabilities, err
-}
+the params argument turns into queryparams with their values.
 
-/*
-GetContainerListWithCollection will gather a list of containers in a collection, and their attached vulns
+Even though params is a map[string]string, and some values can be integers, this seems
+to not matter ( I'm guessing this is a freebie from the http protocol )
 */
-func (c *Client) GetContainerListWithCollection(collection string) ([]ContainerVulnerabilityResponse, error) {
+func (c *Client) GetContainerList(params map[string]string) ([]ContainerVulnerabilityResponse, error) {
 	req, err := c.newRequest("GET", "containers", nil)
 	if err != nil {
 		return nil, err
 	}
-	parms := req.URL.Query()
-	parms.Add("collections", collection)
-	req.URL.RawQuery = parms.Encode()
+	if params != nil {
+		parms := req.URL.Query()
+		for queryParam, queryValue := range params {
+			parms.Add(queryParam, queryValue)
+		}
+		req.URL.RawQuery = parms.Encode()
+	}
 	var ContainerVulnerabilities []ContainerVulnerabilityResponse
 	_, err = c.do(req, &ContainerVulnerabilities)
 	return ContainerVulnerabilities, err
