@@ -5,7 +5,7 @@ import (
 )
 
 /*
-ContainerVulnerabilityResponse is for getting the vulnerabilities identifed on container images
+ContainerVulnerabilityResponse is for getting the vulnerabilities identified on container images
 */
 type ContainerVulnerabilityResponse struct {
 	ID                string   `json:"_id"`
