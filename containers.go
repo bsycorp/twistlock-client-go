@@ -46,7 +46,7 @@ type ContainerVulnerabilityResponse struct {
 			Twistlock      bool          `json:"twistlock"`
 			Type           string        `json:"type"`
 			VecStr         string        `json:"vecStr"`
-		} `json:"complianceVulnerabilities"`
+		} `json:"complianceIssues"`
 		ComplianceVulnerabilitiesCnt int    `json:"complianceVulnerabilitiesCnt"`
 		ID                           string `json:"id"`
 		Image                        string `json:"image"`
